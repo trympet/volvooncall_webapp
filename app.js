@@ -5,13 +5,14 @@
  */
 /*jshint esversion: 6*/
 document.addEventListener('DOMContentLoaded', getTimers);
+let timersFromDatabase = {};
 
 //get timers from database
 function getTimers () {
   let timersRequest = new XMLHttpRequest();
   timersRequest.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-          document.alert(this.responseText);
+          timersFromDatabase = JSON.parse(this.responseText);
     }
   }
   timersRequest.open("GET", document.location.href + "gettimers.php?"

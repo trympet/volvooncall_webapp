@@ -6,8 +6,8 @@
  */
 include 'database.php';
 header("Content-Type: application/json; charset=UTF-8");
-
 function getTimersFromDatabase () {
+	global $conn;
 	$sqlGetTimers = "SELECT t_name, t_time, t_day, t_repeat FROM timer_heat";
 	$sqlGetTimersResult = $conn->query($sqlGetTimers);
 	if ($sqlGetTimersResult->num_rows > 0) {
@@ -17,5 +17,5 @@ function getTimersFromDatabase () {
     echo "0 results";
 	}
 }
-
+getTimersFromDatabase();
 ?>

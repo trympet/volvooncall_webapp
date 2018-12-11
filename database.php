@@ -7,8 +7,8 @@
 
 /* EDIT FOLLOWING PARAMETERS FOR YOUR DATABASE */
 $hostname = "localhost";
-$username = "username";
-$password = "password";
+$username = "volvooncall";
+$password = "volvooncall";
 $database = "volvooncall";
 
 $conn = mysqli_connect($hostname, $username, $password, $database);
