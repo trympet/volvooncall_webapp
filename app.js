@@ -4,25 +4,35 @@
  * @date    10/12/18 20:51:48
  */
 /*jshint esversion: 6*/
-// document.addEventListener('DOMContentLoaded',
-//     function(event){
-//         function...
-//         xxxx.addEventListener('submit', function....);  // hvis brukeren klikker knapp, kjør funksjon
-// });
+document.addEventListener('DOMContentLoaded', getTimers);
+
+//get timers from database
+function getTimers () {
+  let timersRequest = new XMLHttpRequest();
+  timersRequest.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+          document.alert(this.responseText);
+    }
+  }
+  timersRequest.open("GET", document.location.href + "gettimers.php?"
+   + Math.random(), true);
+  timersRequest.send();
+}
 
 //function for toggling timer modal
 function toggleTimerModal (timer) {
 
 }
 
-function loadTimerData () {
+//edit timer
+function editTimerData () {
   let timerRequest = new XMLHttpRequest();
   timerRequest.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
           document.alert(this.responseText);
     }
   }
-  timerRequest.open("GET", "demo_get.asp?timerName=test&t="
+  timerRequest.open("GET", document.location.href + "demo_get.php?timerName=test&t="
    + Math.random(), true);
   timerRequest.send();
 }
