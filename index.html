@@ -12,6 +12,7 @@
   <title>Volvo On Call – Webapp</title>
 
   <link href="styles.css" rel="stylesheet"> <!-- main stylesheet -->
+  <link href="animate.css" rel="stylesheet">
   <script charset="utf-8" src="app.js"></script>  <!-- main javascript -->
 
   <!-- Latest compiled and minified CSS -->
@@ -37,7 +38,25 @@
   </section>
 
   <!-- heat timer modal -->
-
+  <div class="modal fade" id="heat-timer-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Heat Timer</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- content -->
   <div class="container">

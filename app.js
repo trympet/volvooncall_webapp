@@ -13,11 +13,37 @@ function getTimers () {
   timersRequest.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
           timersFromDatabase = JSON.parse(this.responseText);
+          displayTimers(); //once response recived, call function displayTimers
+          console.log('fetched!');
     }
   }
   timersRequest.open("GET", document.location.href + "gettimers.php?"
    + Math.random(), true);
   timersRequest.send();
+}
+
+//prints timers inside timer field
+function displayTimers () {
+  const TIMERFIELD = document.getElementById('timers');
+  //for each row in mysql database, print timer
+  for (let i = 0; timersFromDatabase.length > i; i++) {
+    console.log(i)
+    let timerDiv = document.createElement('DIV');
+    timerDiv.className = "timer";
+    timerDiv.innerHTML = `${timersFromDatabase[i].t_name}
+      <button type="button" value="${timersFromDatabase[i].t_name}" onclick="editTimer(this.value)" class="float-right btn btn-info">
+      <i class="fas fa-edit"></i><span>Edit</span></button>`;
+    TIMERFIELD.appendChild(timerDiv);
+  }
+}
+
+function editTimer (a) {
+  console.log(a);
+  $('#heat-timer-modal').modal();
+  let modalContent = document.getElementById('heat-timer-modal').querySelector('div[class="modal-body"]');
+  console.log(modalContent);
+  
+
 }
 
 //function for toggling timer modal
