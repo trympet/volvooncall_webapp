@@ -21,3 +21,9 @@
 .timer span i {
 	color: skyblue;
 }
+#loading-indicator, #success-indicator {
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
