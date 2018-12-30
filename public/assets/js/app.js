@@ -6,10 +6,9 @@
 /*jshint esversion: 6*/
 document.addEventListener('DOMContentLoaded', getTimers);
 
-
-
 let timersFromDatabase = {};
 let oldName;
+let indicator = {};
 //get timers from database
 function getTimers () {
   const TIMERFORM = document.getElementById('timer-edit-form');
@@ -25,22 +24,27 @@ function getTimers () {
           console.log('fetched!');
     }
   }
-  timersRequest.open("GET", document.location.href + "get_timers.php?"
-    + Math.random(), true);
+  timersRequest.open("GET", document.location.href + "/get_timers", true);
   timersRequest.send();
 }
 
 //prints timers inside timer field
 function displayTimers () {
   const TIMERFIELD = document.getElementById('timers');
+  //removes old records when pulling new ones
   TIMERFIELD.innerHTML = '';
   //for each row in mysql database, print timer
   for (let i = 0; timersFromDatabase.length > i; i++) {
     console.log(i)
     let timerDiv = document.createElement('DIV');
     timerDiv.className = "timer";
+    timerDiv.setAttribute('data-name', timersFromDatabase[i].t_name);
+    timerDiv.id = 'timer-' + timersFromDatabase[i].t_id;
     timerDiv.innerHTML = `${timersFromDatabase[i].t_name}
-      <button type="button" value="${i}" onclick="editTimer(this.value)" class="float-right btn btn-info">
+      <button type="button" value="${timersFromDatabase[i].t_id}" onclick="deleteTimer(this)" class="delete-button float-right btn btn-danger">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+      <button type="button" value="${i}" onclick="editTimer(this.value)" class="edit-button float-right btn btn-info">
       <i class="fas fa-edit"></i><span>Edit</span></button>`;
     TIMERFIELD.appendChild(timerDiv);
   }
@@ -51,10 +55,32 @@ function newTimer () {
   $('#heat-timer-modal').modal();
 }
 
+function deleteTimer (index) {
+let id = +index.value;
+let name = index.parentElement.getAttribute('data-name');
+if(confirm(`Are you sure that you want to remove the timer "${name}"?`)) {
+  $.ajax({
+    url: '/dashboard/delete',
+    type: 'POST',
+    data: {id: id},
+    error: function() {
+      indicator.error('Error deleting timer')
+    },
+    success: function(data) {
+      $("#timer-"+id).remove();
+      $('#success-indicator').show(100);
+      $('#success-indicator, #success-indicator *').delay(1000).hide(200)
+    }
+  });
+}
+$('#delete-timer-modal').modal();
+}
+
+
 //function for editing selected timer
-function editTimer (iTimer) {
-  timerIndex = iTimer;
-  getTimerData(iTimer);
+function editTimer (index) {
+  timerIndex = index;
+  getTimerData(index);
   $('#heat-timer-modal').modal();
   let modalContent = document.getElementById('heat-timer-modal').querySelector('div[class="modal-body"]');
   console.log(modalContent);
@@ -100,11 +126,14 @@ function setTimerData (e) {
   let postDataStringify = JSON.stringify(postData);
   //sending name, time, days and enable to update_timer.php
   $.ajax({
-    url: document.location.href + 'update_timer.php',
+    url: '/dashboard/update',
     type: 'post',
     data: {timerData: postDataStringify},
     beforeSend: function() {
       $('#loading-indicator').show(100);
+    },
+    error: function() {
+      indicator.error('Error setting timer data')
     },
     success: function(response){
       $('#loading-indicator').hide(100);
@@ -116,3 +145,18 @@ function setTimerData (e) {
     }
   });
 }
+indicator.loading = bool => bool ? $('#loading-indicator').show(100) : $('#loading-indicator').hide(100);
+indicator.success = function() {
+ $('#success-indicator, #success-indicator *').show(100);
+ $('#success-indicator, #success-indicator *').delay(1000).hide(200);
+}
+indicator.error = function(error) {
+  $('#error-indicator, #error-indicator *').show(100);
+  $('#error-indicator, #error-indicator *').delay(3500).hide(200);
+  console.log('%c'+error, 'color: blue; font-weight: bold');
+}
+
+/*
+indicator.loading = bool => bool ? $('#loading-indicator').show(100) : $('#loading-indicator').hide(100);
+indicator.success = bool => bool ? $('#success-indicator').show(100) : $('#success-indicator, #success-indicator *').delay(1000).hide(200);
+indicator.error = bool => bool ? $('#error-indicator').show(100) : $('#error-indicator, #error-indicator *').delay(1000).hide(200);*/

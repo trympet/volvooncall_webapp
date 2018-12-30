@@ -7,10 +7,15 @@
  #timers {
  	border-collapse: collapse;
  }
- #timers button {
+ #timers .edit-button {
  	right: 0.75rem;
-    position: absolute;
-    top: 0.375rem;
+  position: absolute;
+  top: 0.375rem;
+ }
+  #timers .delete-button {
+  right: 6rem;
+  position: absolute;
+  top: 0.375rem;
  }
 .timer {
 	border: 1px solid #dee2e6;
@@ -21,9 +26,12 @@
 .timer span i {
 	color: skyblue;
 }
-#loading-indicator, #success-indicator {
+.indicator {
   z-index: 5;
   position: absolute;
   top: 0;
   left: 0;
+  pointer-events: none;
+  text-align: left !important;
+  font-size: 125% !important;
 }

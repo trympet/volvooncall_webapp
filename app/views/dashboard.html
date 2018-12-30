@@ -1,0 +1,143 @@
+<!--
+ * Hensikten med denne filen er 
+ * @authors Trym Lund Flogard (trym2001@hotmail.com)
+ * @date    10/12/18 20:51:50
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Volvo On Call – Webapp</title>
+
+  <link href="assets/css/styles.css" rel="stylesheet"> <!-- main stylesheet -->
+  <script charset="utf-8" src="assets/js/app.js"></script>  <!-- main javascript -->
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+
+</head>
+<body>
+  <!-- header -->
+  <section class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1>A simple webapp for Volvo On Call</h1> 
+      <p>subtext</p> 
+    </div>
+  </section>
+
+<!-- success indicator -->
+<button class="indicator btn btn-sm btn-success" id="success-indicator" style="display: none">
+  <i class="fas fa-check"></i>
+   Success!
+</button>
+<button class="indicator btn btn-sm btn-danger" id="error-indicator" style="display: none">
+  <i class="fas fa-exclamation-triangle"></i>
+   Error! (see console log for details)
+</button>
+
+  <!-- heat timer modal -->
+  <div class="modal fade" id="heat-timer-modal" tabindex="-1" role="dialog">
+      <!-- loading indicator -->
+    <button class="indicator btn btn-sm btn-warning" id="loading-indicator" style="display: none">
+      <i class="fas fa-sync-alt fa-spin fa-fw"></i>
+       Loading...
+    </button>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Heat Timer</h5>
+          <button type="button" id="heat-timer-modal-close" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="timer-edit">
+            <form id="timer-edit-form">
+              <div class="form-row">
+                <div class="form-group col-md-8">
+                  <label for="timer-name">Timer name:</label>
+                  <input type="text" class="form-control" id="timer-name">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="timer-time">Start time:</label>
+                  <input type="time" class="form-control" id="timer-time">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-sm-6">
+                <div id="timer-days" class="form-group">
+                  <h5>Timer active for day(s):</h5>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="mon">
+                    <label class="form-check-label" for="mon">Monday</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="tue">
+                    <label class="form-check-label" for="tue">Tuesday</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="wed">
+                    <label class="form-check-label" for="wed">Wednesday</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="thu">
+                    <label class="form-check-label" for="thu">Thursday</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="fri">
+                    <label class="form-check-label" for="fri">Friday</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="sat">
+                    <label class="form-check-label" for="sat">Saturday</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="sun">
+                    <label class="form-check-label" for="sun">Sunday</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <h5></h5>
+                <div class="form-check form-group">
+                  <input class="form-check-input" type="checkbox" value="" id="timer-enable">
+                  <label class="form-check-label" for="timer-enable">Enable timer?</label>
+                </div>
+              </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" id="submit-timer-edit-form" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- content -->
+  <div class="container">
+    <section class="row">
+      <div class="col-sm-6">
+      <h3>Custom Engine Heater Timers</h3>
+      <!-- timers from database go here -->
+      <button type="button" onclick="newTimer()" class="btn btn-info" style="margin-bottom: 0.5rem;">
+      <i class="fas fa-add"></i><span>New timer</span></button>
+      <div id="timers">
+      </div>
+    </section>
+  </div>
+</body>
+</html>

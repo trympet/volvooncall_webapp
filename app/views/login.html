@@ -1,0 +1,57 @@
+<!--
+ * Hensikten med denne filen er 
+ * @authors Trym Lund Flogard (trym2001@hotmail.com)
+ * @date    10/12/18 20:51:50
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Volvo On Call – Webapp</title>
+
+  <link href="assets/css/login.css" rel="stylesheet"> <!-- main stylesheet -->
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+
+</head>
+<body>
+  <section class="login-form">
+    <h1 class="form-heading">Volvo On Call</h1>
+    <div class="main-div">
+      <div class="form-header">
+       <h2>Login</h2>
+       <p>Please enter your username and password</p>
+       </div>
+      <form id="login" method="post">
+        <div class="form-group">
+          <input required type="text" class="form-control" name="username" placeholder="username">
+        </div>
+        <div class="form-group">
+          <input required type="password" class="form-control" name="password" placeholder="password">
+        </div>
+        <button type="submit" value="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+    <p class="bottom-text">Created by Trym Flogard</p>
+  </section>
+</body>
+</html>
+
+<script>
+  document.getElementById('login').addEventListener('submit', function (e) {
+    
+  })
+
+</script>
