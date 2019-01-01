@@ -10,7 +10,6 @@ $hostname = "localhost";
 $username = "volvooncall";
 $password = "volvooncall";
 $database = "volvooncall";
-
 $conn = mysqli_connect($hostname, $username, $password, $database);
 if (!$conn) {
 	echo "<script>console.log(\"failed to connect to database on $localhost\")</script>";

@@ -6,13 +6,13 @@ use GuzzleHttp\Client;
 global $conn;
 global $_POST;
 
-function login ($postData) {
-  var_dump($postData);
-  if ($postData['username'] === 'admin' && $postData['password'] === 'admin') {
-    header("Location: /dashboard");
-    die();
-  } else { return; }
-}
+// function login ($postData) {
+//   var_dump($postData);
+//   if ($postData['username'] === 'admin' && $postData['password'] === 'admin') {
+//     header("Location: /dashboard");
+//     die();
+//   } else { return; }
+// }
 
 
 function deleteTimer ($id) {

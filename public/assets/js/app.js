@@ -160,9 +160,10 @@ let manualHeaterCall = new class {
     });
   }
   start () {
-    console.log('test');
-    this.url = 'heater/start';
-    this.ajax();
+    if(confirm(`Are you sure that you want to start the parking heater?`)) {
+      this.url = 'heater/start';
+      this.ajax();
+    } 
   }
   stop () {
     this.url = 'heater/stop';
