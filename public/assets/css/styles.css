@@ -20,8 +20,9 @@
 .timer {
 	border: 1px solid #dee2e6;
 	padding: .75rem;
-    vertical-align: top;
-    position: relative;
+  vertical-align: top;
+  position: relative;
+  padding-right: 9rem;
 }
 .timer span i {
 	color: skyblue;

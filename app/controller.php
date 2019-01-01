@@ -1,5 +1,8 @@
 <?php
 require_once 'config/database.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+use GuzzleHttp\Client;
+
 global $conn;
 global $_POST;
 
@@ -7,6 +10,7 @@ function login ($postData) {
   var_dump($postData);
   if ($postData['username'] === 'admin' && $postData['password'] === 'admin') {
     header("Location: /dashboard");
+    die();
   } else { return; }
 }
 
@@ -43,8 +47,6 @@ function updateTimer () {
   if ($enable === "") {$enable=0;}
   echo $name, $time, $days, $enable, $oldName;
 
-
-
   //create new timer
   if (!$oldName) {
     $newTimer = "INSERT INTO timer_heat (t_name, t_time, t_day, t_enable)
@@ -68,4 +70,51 @@ function updateTimer () {
   }
 }
 
+//sends http requests to VOC REST API
+class vocApi 
+{
+  public function __construct() {
+  //username and password from database
+  $this->vocUser = '';
+  $this->vocPass = '';
+  $this->region = ""; //default region none
+  $this->service_url = "https://vocapi".$this->region.".wirelesscar.net/customerapi/rest/v3.0/";
+  $this->client = new client([
+    'base_uri' => $this->service_url,
+    'timeout'  => 30.0,
+    'headers' => [
+      "X-Device-Id" => "Device",
+      "X-OS-Type" => "Android",
+      "X-Originator-Type" => "App",
+      "X-OS-Version" => "22",
+      "Content-Type" => "application/json",
+    ],
+  'auth' => [$this->vocUser, $this->vocPass]
+  ]); //client object used for all requests
+  }
+  function getVehicleId () {
+    $res = $this->client->request('GET', 'customeraccounts'); //responds with JSON
+    $resJson = json_decode($res->getBody());
+    //accountvehiclerelations is array of cars in account
+    $vehicleRes = $this->client->request('GET', $resJson->accountVehicleRelations[0]);
+    $vehicleJson = json_decode($vehicleRes->getBody());
+    //the vehicle object is base-url for api calls
+    return $vehicleJson->vehicle;
+  }
+
+  function apiCall ($uri) {
+    //base-url for api calls
+    $vehicle = $this->getVehicleId();
+    $res = $this->client->request('POST', $vehicle . $uri);
+    return $res->getStatusCode() . PHP_EOL . $res->getBody();
+  }
+  /* API calls */
+  public function startHeater() {
+    return $this->apiCall('/heater/start');
+  }
+  public function stopHeater() {
+    return $this->apiCall('/heater/stop');
+  }
+}
+$client = new vocApi;
 ?>

@@ -103,11 +103,6 @@ function getTimerData (index) {
     document.getElementById(days[i]).checked = true;
   }
 }
-
-function refresh () {
-  location.reload();
-}
-
 //edit timer
 function setTimerData (e) {
   Event.preventDefault;
@@ -130,20 +125,49 @@ function setTimerData (e) {
     type: 'post',
     data: {timerData: postDataStringify},
     beforeSend: function() {
-      $('#loading-indicator').show(100);
+      indicator.loading(true);
     },
     error: function() {
+      indicator.loading(false);
       indicator.error('Error setting timer data')
     },
     success: function(response){
-      $('#loading-indicator').hide(100);
-      $('#success-indicator').show(100);
-      $('#success-indicator, #success-indicator *').delay(1000).hide(200);
+      indicator.loading(false);
+      indicator.success();
       console.log(response);
       getTimers();
-      $('#heat-timer-modal').modal("hide");
+      $('#heat-timer-modal').modal("hide"); //hiding modal
     }
   });
+}
+let manualHeaterCall = new class {
+  ajax () {
+    $.ajax({
+    url: '/api/' + this.url,
+    type: 'get',
+    beforeSend: function() {
+      indicator.loading(true);
+    },
+    error: function() {
+      indicator.loading(false);
+      indicator.error('Error (see console log for details)');
+      console.log(response);
+    },
+    success: function(response){
+      indicator.loading(false);
+        indicator.success();
+    }
+    });
+  }
+  start () {
+    console.log('test');
+    this.url = 'heater/start';
+    this.ajax();
+  }
+  stop () {
+    this.url = 'heater/stop';
+    this.ajax();
+  }
 }
 indicator.loading = bool => bool ? $('#loading-indicator').show(100) : $('#loading-indicator').hide(100);
 indicator.success = function() {
@@ -155,8 +179,3 @@ indicator.error = function(error) {
   $('#error-indicator, #error-indicator *').delay(3500).hide(200);
   console.log('%c'+error, 'color: blue; font-weight: bold');
 }
-
-/*
-indicator.loading = bool => bool ? $('#loading-indicator').show(100) : $('#loading-indicator').hide(100);
-indicator.success = bool => bool ? $('#success-indicator').show(100) : $('#success-indicator, #success-indicator *').delay(1000).hide(200);
-indicator.error = bool => bool ? $('#error-indicator').show(100) : $('#error-indicator, #error-indicator *').delay(1000).hide(200);*/

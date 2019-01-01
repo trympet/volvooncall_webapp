@@ -131,11 +131,29 @@
   <div class="container">
     <section class="row">
       <div class="col-sm-6">
-      <h3>Custom Engine Heater Timers</h3>
+        <h3>Custom Engine Heater Timers</h3>
+        <!-- timers from database go here -->
+        <button type="button" onclick="newTimer()" class="btn btn-info" style="margin-bottom: 0.5rem;">
+        <i class="fas fa-add"></i><span>New timer</span></button>
+        <div id="timers">
+        </div>
+      </div>
+      <div class="col-sm-6">
+      <h3>Active timers:</h3>
       <!-- timers from database go here -->
-      <button type="button" onclick="newTimer()" class="btn btn-info" style="margin-bottom: 0.5rem;">
-      <i class="fas fa-add"></i><span>New timer</span></button>
-      <div id="timers">
+      <div id="active-timers">
+        <table>
+          <thead>
+            <th><td>asdasd</td><td>asdas</td></th>
+          </thead>
+        </table>
+      </div>
+    </section>
+    <section class="row">
+      <div class="col-sm-4">
+        <h3>Manually start/stop heater</h3>
+        <button type="button" class="btn btn-primary" onclick="manualHeaterCall.start()">Start heater</button>
+        <button type="button" class="btn btn-primary" onclick="manualHeaterCall.stop()">Stop heater</button>
       </div>
     </section>
   </div>
