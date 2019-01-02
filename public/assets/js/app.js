@@ -4,7 +4,9 @@
  * @date    10/12/18 20:51:48
  */
 /*jshint esversion: 6*/
+
 document.addEventListener('DOMContentLoaded', getTimers);
+
 
 let timersFromDatabase = {};
 let oldName;
@@ -15,7 +17,7 @@ function getTimers () {
   $('#heat-timer-modal').on('hidden.bs.modal', function () {
         TIMERFORM.reset();
   });
-  document.getElementById('submit-timer-edit-form').addEventListener('click', setTimerData);
+  document.getElementById('timer-edit-form').addEventListener('submit', setTimerData);
   let timersRequest = new XMLHttpRequest();
   timersRequest.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -30,10 +32,13 @@ function getTimers () {
 
 //prints timers inside timer field
 function displayTimers () {
+  timerStatus();
   const TIMERFIELD = document.getElementById('timers');
   //removes old records when pulling new ones
   TIMERFIELD.innerHTML = '';
-  //for each row in mysql database, print timer
+  if (!timersFromDatabase.length) {
+    TIMERFIELD.innerHTML = '<div class="timer">No timers are configured</div>';
+  }
   for (let i = 0; timersFromDatabase.length > i; i++) {
     console.log(i)
     let timerDiv = document.createElement('DIV');
@@ -50,33 +55,61 @@ function displayTimers () {
   }
 }
 
+function timerStatus () {
+  let TIMERSTATUS = document.getElementById('timer-status');
+  TIMERSTATUS.innerHTML = '';
+  if (!timersFromDatabase.length) {
+    TIMERSTATUS.innerHTML = '<tr><th colspan="2">No timers are configured</th></tr>';
+  } else {
+    for (let i = 0; i < timersFromDatabase.length; i++){
+      let tr = document.createElement('tr');
+      let th = document.createElement('th');
+      th.setAttribute('scope', 'row');
+      th.innerHTML = timersFromDatabase[i].t_name;
+      let td = document.createElement('td');
+      if (timersFromDatabase[i].t_enable) {
+        td.setAttribute('class', 'table-success');
+        td.innerHTML = 'Active <i class="fas fa-check-circle"></i>';
+      } else {
+        td.setAttribute('class', 'table-danger');
+        td.innerHTML = 'Disabled <i class="fas fa-times-circle"></i>';
+      }
+      TIMERSTATUS.appendChild(tr);
+      TIMERSTATUS.lastElementChild.appendChild(th);
+      TIMERSTATUS.lastElementChild.appendChild(td);
+    }
+  }
+}
+
 function newTimer () {
   oldName = undefined;
   $('#heat-timer-modal').modal();
 }
 
 function deleteTimer (index) {
-let id = +index.value;
-let name = index.parentElement.getAttribute('data-name');
-if(confirm(`Are you sure that you want to remove the timer "${name}"?`)) {
-  $.ajax({
-    url: '/dashboard/delete',
-    type: 'POST',
-    data: {id: id},
-    error: function() {
-      indicator.error('Error deleting timer')
-    },
-    success: function(data) {
-      $("#timer-"+id).remove();
-      $('#success-indicator').show(100);
-      $('#success-indicator, #success-indicator *').delay(1000).hide(200)
-    }
-  });
+  let id = +index.value;
+  let name = index.parentElement.getAttribute('data-name');
+  if(confirm(`Are you sure that you want to remove the timer "${name}"?`)) {
+    $.ajax({
+      url: '/dashboard/delete',
+      type: 'POST',
+      data: {id: id},
+      beforeSend: function() {
+        indicator.loading(true);
+      },
+      error: function() {
+        indicator.loading(true);
+        indicator.error('Error deleting timer')
+      },
+      success: function(data) {
+        indicator.loading(true);
+        indicator.success();
+        getTimers();
+      }
+    });
+  }
+  $('#delete-timer-modal').modal();
 }
-$('#delete-timer-modal').modal();
-}
-
-
 //function for editing selected timer
 function editTimer (index) {
   timerIndex = index;
@@ -85,7 +118,6 @@ function editTimer (index) {
   let modalContent = document.getElementById('heat-timer-modal').querySelector('div[class="modal-body"]');
   console.log(modalContent);
 }
-
 //sets form fields to values in timersFromDatabase object
 function getTimerData (index) {
   let name = timersFromDatabase[index].t_name;
@@ -105,7 +137,7 @@ function getTimerData (index) {
 }
 //edit timer
 function setTimerData (e) {
-  Event.preventDefault;
+  event.preventDefault();
   const TIMERFORM = document.getElementById('timer-edit-form');
   const TIMERDAYS = document.getElementById('timer-days');
   let name = TIMERFORM.querySelector('input[id="timer-name"]').value;
@@ -140,6 +172,7 @@ function setTimerData (e) {
     }
   });
 }
+
 let manualHeaterCall = new class {
   ajax () {
     $.ajax({
@@ -170,6 +203,7 @@ let manualHeaterCall = new class {
     this.ajax();
   }
 }
+
 indicator.loading = bool => bool ? $('#loading-indicator').show(100) : $('#loading-indicator').hide(100);
 indicator.success = function() {
  $('#success-indicator, #success-indicator *').show(100);

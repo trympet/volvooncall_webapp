@@ -4,6 +4,10 @@
  * @authors Trym Lund Flogard (trym2001@hotmail.com)
  * @date    10/12/18 20:52:59
  */
+ * {box-sizing: border-box;}
+ .row {
+  margin: 2rem 0;
+ }
  #timers {
  	border-collapse: collapse;
  }
@@ -36,3 +40,7 @@
   text-align: left !important;
   font-size: 125% !important;
 }
+#timer-status tr td { font-weight: bold; }
+/*#timer-status tr td  i { color: #4a4a4a; }*/
+.table-success i { color: #004000; }
+.table-danger i { color: #400000; }
