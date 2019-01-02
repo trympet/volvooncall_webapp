@@ -11,7 +11,7 @@ Webapp for setting attributes for your Volvo car via the Volvo On Call API
 2. Browse to 'app/config/database.php' and edit database params to your mysql server
 3. Run the database seeder
 4. Add the PHP task to your crontab with the following command:<br>
-  echo 'www-data php /<PATH TO YOUR INSTALL DIRECTORY>/app/scripts/check_timer.php' >> /etc/crontab
+  <b>echo 'www-data php /\<PATH TO YOUR INSTALL DIRECTORY\>/app/scripts/check_timer.php' >> /etc/crontab</b>
 5. Login to the app with the default credentials<br> 
 Username: 'admin' <br>
 Password: 'admin'<br>
