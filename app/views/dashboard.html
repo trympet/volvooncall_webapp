@@ -36,17 +36,56 @@
     <i class="fas fa-check"></i>
      Success!
   </button>
+  <!-- loading indicator -->
+  <button class="indicator btn btn-sm btn-warning" id="loading-indicator" style="display: none">
+    <i class="fas fa-sync-alt fa-spin fa-fw"></i>
+     Loading...
+  </button>
+  <!-- error indicator -->
   <button class="indicator btn btn-sm btn-danger" id="error-indicator" style="display: none">
     <i class="fas fa-exclamation-triangle"></i>
      Error! (see console log for details)
   </button>
+  
+  <!-- content -->
+  <div class="container">
+    <!-- open configuration button -->
+    <button type="button" class="btn btn-light" onclick="configure.open()">Configure</button>
+    <section class="row">
+      <div class="col-sm-6">
+        <h3>Custom Engine Heater Timers</h3>
+        <!-- timers from database go here -->
+        <button type="button" onclick="newTimer()" class="btn btn-info" style="margin-bottom: 0.5rem;">
+        <i class="fas fa-add"></i><span>New timer</span></button>
+        <div id="timers">
+        </div>
+      </div>
+      <div class="col-sm-6">
+      <h3>Active timers:</h3>
+      <!-- timers from database go here -->
+      <div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" >Name</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="timer-status">
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="row">
+      <div class="col-sm-4">
+        <h3>Manually start/stop heater</h3>
+        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="manualHeaterCall.start()">Start heater</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="manualHeaterCall.stop()">Stop heater</button>
+      </div>
+    </section>
+  </div>
   <!-- heat timer modal -->
   <div class="modal fade" id="heat-timer-modal" tabindex="-1" role="dialog">
-      <!-- loading indicator -->
-    <button class="indicator btn btn-sm btn-warning" id="loading-indicator" style="display: none">
-      <i class="fas fa-sync-alt fa-spin fa-fw"></i>
-       Loading...
-    </button>
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <form id="timer-edit-form">
@@ -120,41 +159,47 @@
       </div>
     </div>
   </div>
-
-  <!-- content -->
-  <div class="container">
-    <section class="row">
-      <div class="col-sm-6">
-        <h3>Custom Engine Heater Timers</h3>
-        <!-- timers from database go here -->
-        <button type="button" onclick="newTimer()" class="btn btn-info" style="margin-bottom: 0.5rem;">
-        <i class="fas fa-add"></i><span>New timer</span></button>
-        <div id="timers">
-        </div>
+    <!-- configure modal -->
+  <div class="modal fade" id="configure-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form id="configure-form" autocomplete="off">
+          <input autocomplete="false" name="hidden" type="text" style="display:none;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Configure</h5>
+            <button type="button" id="configure-close" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group form-row">
+              <div class="col">
+                <label for="voc-email" class="col-sm-2 col-form-label">Email</label>
+                <input autocomplete="new-password" type="email" class="form-control" id="voc-email" placeholder="email@examle.com">
+              </div>
+              <div class="col">
+                <label for="voc-password" class="col-sm-2 col-form-label">Password</label>
+                <input autocomplete="new-password" type="password" class="form-control" id="voc-password" placeholder="Password">
+              </div>
+            </div>
+             <div class="form-group form-row">
+              <label for="voc-region" class="col-sm-2 col-form-label">Region</label>
+              <div class="col-sm-10">
+                <select class="custom-select my-1 mr-sm-2" id="voc-region">
+                  <option selected>Select region</option>
+                  <option value="0">North-America</option>
+                  <option value="1">China</option>
+                  <option value="2">Europe (and everywhere else)</option>
+                </select>
+              </div>
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" id="submit-configure-form" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
       </div>
-      <div class="col-sm-6">
-      <h3>Active timers:</h3>
-      <!-- timers from database go here -->
-      <div>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col" >Name</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody id="timer-status">
-          </tbody>
-        </table>
-      </div>
-    </section>
-    <section class="row">
-      <div class="col-sm-4">
-        <h3>Manually start/stop heater</h3>
-        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="manualHeaterCall.start()">Start heater</button>
-        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="manualHeaterCall.stop()">Stop heater</button>
-      </div>
-    </section>
+    </div>
   </div>
 </body>
 </html>

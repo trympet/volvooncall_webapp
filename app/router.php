@@ -19,6 +19,12 @@ if ( isset( $_SESSION['user_id'] ) ) {
       die();
       break;
   /* functioncalls */
+    case '/configure/update' :
+      echo updateVocCredentials($_POST['vocCreds']);
+      break;
+    case '/configure/get' :
+      echo getVocCredentials();
+      break;
     case '/dashboard/delete' :
       echo deleteTimer($_POST['id']);
       break;

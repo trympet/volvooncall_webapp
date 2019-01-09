@@ -70,6 +70,43 @@ function updateTimer () {
   }
 }
 
+function getVocCredentials () {
+  global $conn;
+  $sql = $conn->query("SELECT email, region FROM voc_api_auth WHERE voc_id = 0");
+  $res = $sql->fetch_all(MYSQLI_ASSOC);
+  return json_encode($res);
+
+}
+
+function updateVocCredentials($vocCredsJson) {
+  global $conn;
+  $creds = json_decode($vocCredsJson);
+  $email = $creds->vocEmail;
+  $password = $creds->vocPassword;
+  var_dump($creds);
+  switch ($creds->vocRegion) {
+    case '0':
+      $region = "na";
+      break;
+    case '1':
+      $region = "cn";
+      break;
+    case '2': //eu
+      $region = ""; 
+      break;
+    default:
+      return('Incorrect region');
+      break;
+  }
+
+  $sql1 = "UPDATE voc_api_auth SET email='$email' WHERE voc_id='0'";
+  $sql2 = "UPDATE voc_api_auth SET password='$password' WHERE voc_id='0'";
+  $sql3 = "UPDATE voc_api_auth SET region='$region' WHERE voc_id='0'";
+  if (($conn->query($sql1) && $conn->query($sql2) && $conn->query($sql3)) === TRUE) {
+    return ('success!');
+  }
+}
+
 //sends http requests to VOC REST API
 class vocApi 
 {

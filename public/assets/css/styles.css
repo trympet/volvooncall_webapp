@@ -32,8 +32,8 @@
 	color: skyblue;
 }
 .indicator {
-  z-index: 5;
-  position: absolute;
+  z-index: 1050;
+  position: fixed;
   top: 0;
   left: 0;
   pointer-events: none;

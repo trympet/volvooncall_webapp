@@ -4,7 +4,6 @@
  * @date    10/12/18 20:51:48
  */
 /*jshint esversion: 6*/
-
 document.addEventListener('DOMContentLoaded', getTimers);
 
 
@@ -18,6 +17,8 @@ function getTimers () {
         TIMERFORM.reset();
   });
   document.getElementById('timer-edit-form').addEventListener('submit', setTimerData);
+  document.getElementById('configure-form').addEventListener('submit', configure.save);
+
   let timersRequest = new XMLHttpRequest();
   timersRequest.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -201,6 +202,60 @@ let manualHeaterCall = new class {
   stop () {
     this.url = 'heater/stop';
     this.ajax();
+  }
+}
+
+configure = new class {
+  open() {
+    if (this.get()) {
+      document.querySelector('input#voc-email').value = this.res.email;
+      document.querySelector('select#voc-region').value = this.res.region;
+    }
+    document.querySelector('input#voc-password').value = '';
+    $('#configure-modal').modal();
+    
+  }
+  save(e) {
+    e.preventDefault()
+    console.log('saved!' + document.querySelector('#voc-email').value);
+    let vocEmail = document.querySelector('input#voc-email').value;
+    let vocPassword = document.querySelector('input#voc-password').value;
+    let vocRegion = document.querySelector('select#voc-region').value;
+    $.ajax({
+      url: '/configure/update',
+      type: 'post',
+      data: {vocCreds: JSON.stringify({vocEmail, vocPassword, vocRegion})},
+      beforeSend: function() {
+        indicator.loading(true);
+      },
+      error: function() {
+        indicator.loading(false);
+        indicator.error('Error (see console log for details)');
+        console.log(response);
+      },
+      success: function(response){
+        indicator.loading(false);
+        indicator.success();
+      }
+    });
+    $('#configure-modal').modal('toggle'); //close modal
+  }
+  get () {
+    $.ajax({
+      url: '/configure/get',
+      type: 'get',
+      beforeSend: function() {
+      },
+      error: function(response) {
+        indicator.error('Error (see console log for details)');
+        console.log(response);
+      },
+      success: function(response){
+        console.log(JSON.parse(response))
+        this.res = JSON.parse(response)
+      }
+    });
+
   }
 }
 
