@@ -1,3 +1,0 @@
-Timer started at January 1, 2019, 7:18 pm
-Output from API: 200
-{"status":"Started","statusTimestamp":"2019-01-01T18:22:41+0000","startTime":"2019-01-01T18:22:41+0000","serviceType":"RHS","failureReason":null,"service":"https://vocapi.wirelesscar.net/customerapi/rest/v3.0/vehicles/YV1DZA5C6H2053295/services/305391498","vehicleId":"YV1DZA5C6H2053295","customerServiceId":"305391498"}
