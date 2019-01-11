@@ -107,6 +107,14 @@ function updateVocCredentials($vocCredsJson) {
   }
 }
 
+function updateCredentials ($password, $username) { //updating users credentials
+  if (isset($username)) {
+    $_SESSION['user']->updateUserName($username) = $username;
+  } else if (isset($password)) {
+    $_SESSION['user']->updatePassword() = $password;
+  } else { return 'no credentials specified'; }
+}
+
 //sends http requests to VOC REST API
 class vocApi 
 {

@@ -1,6 +1,7 @@
 <?php
 require_once 'config/database.php';
 
+//starts session and sets timeout
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1800)) {
     // last request was more than 30 minutes ago
     session_unset();     // unset $_SESSION variable for the run-time 
@@ -10,6 +11,7 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 }
 $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 
+//cheks credentials to database
 function login ($postData) {
   $postData = $_POST;
   global $conn;
@@ -32,24 +34,28 @@ function login ($postData) {
     }
   }
 }
-
-function changeCredentials () {
-  $newPassword = password_hash($_POST['newpassword'], PASSWORD_DEFAULT);
-  $stmt = $conn->prepare("UPDATE users SET password = ? WHERE uid = ?");
-  $stmt->bind_param('ss', $newPassword, $_SESSION['user_id']);
-  $stmt->execute();
-  //$result = $stmt->get_result();
-
-
-  
+//----- USERMODEL
+class user { //unique to user
+  public function __construct () {
+    $this->uid = $_SESSION['user_id'];
+  }
+  public function updateUserName($newUserName) {
+    $stmt = $conn->prepare("UPDATE users SET password = ? WHERE uid = ?");
+    $stmt->bind_param('ss', $newUserName, $this->uid);
+    $stmt->execute();
+    //$result = $stmt->get_result();
+    return 'Password updated??';
+  }
+  public function updatePass($newPassword) {
+    $hashed = password_hash($newPassword, PASSWORD_DEFAULT); //hash
+    $stmt = $conn->prepare("UPDATE users SET username = ? WHERE uid = ?");
+    $stmt->bind_param('ss', $hashed, $this->uid);
+    $stmt->execute();
+    //$result = $stmt->get_result();
+    return 'Password updated??';
+  }
 }
 
-//   var_dump($postData);
-//   if ($postData['username'] === 'admin' && $postData['password'] === 'admin') {
-//     header("Location: /dashboard");
-//     die();
-//   } else { return; }
-// }
-
+$_SESSION['user'] = new user;
 
 ?>
