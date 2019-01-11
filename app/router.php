@@ -19,11 +19,18 @@ if ( isset( $_SESSION['user_id'] ) ) {
       die();
       break;
   /* functioncalls */
-    case '/configure/update' :
-      echo updateVocCredentials($_POST['vocCreds']);
+    case '/configure/user/update' :
+      $username = json_decode($_POST['creds'])->username;
+      $password = json_decode($_POST['creds'])->password;
+      echo updateCredentials($password, $username);
       break;
-    case '/configure/get' :
+    case '/configure/voc/get' :
       echo getVocCredentials();
+      break;
+    case '/configure/voc/update' :
+      $username = json_decode($_POST['vocCreds'])->username;
+      $password = json_decode($_POST['vocCreds'])->password;
+      echo updateVocCredentials($password, $username);
       break;
     case '/dashboard/delete' :
       echo deleteTimer($_POST['id']);

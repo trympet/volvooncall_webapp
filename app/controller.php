@@ -109,9 +109,9 @@ function updateVocCredentials($vocCredsJson) {
 
 function updateCredentials ($password, $username) { //updating users credentials
   if (isset($username)) {
-    $_SESSION['user']->updateUserName($username) = $username;
+    $_SESSION['user']->updateUserName($username);
   } else if (isset($password)) {
-    $_SESSION['user']->updatePassword() = $password;
+    $_SESSION['user']->updatePassword();
   } else { return 'no credentials specified'; }
 }
 
